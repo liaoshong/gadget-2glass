@@ -19,7 +19,7 @@ OPT   +=  -DWALLCLOCK
 
 
 #--------------------------------------- TreePM Options
-OPT   +=  -DPMGRID=512
+OPT   +=  -DPMGRID=128
 #OPT   +=  -DPLACEHIGHRESREGION=3
 #OPT   +=  -DENLARGEREGION=1.2
 #OPT   +=  -DASMTH=1.25
@@ -35,7 +35,7 @@ OPT   +=  -DDOUBLEPRECISION_FFTW
 OPT   +=  -DSYNCHRONIZATION
 #OPT   +=  -DFLEXSTEPS
 #OPT   +=  -DPSEUDOSYMMETRIC
-#OPT   +=  -DNOSTOP_WHEN_BELOW_MINTIMESTEP
+OPT   +=  -DNOSTOP_WHEN_BELOW_MINTIMESTEP
 #OPT   +=  -DNOPMSTEPADJUSTMENT
 
 
@@ -69,7 +69,7 @@ OPT   +=  -DSYNCHRONIZATION
 
 #--------------------------------------- Glass making
 #OPT   +=  -DMAKEGLASS=262144
-
+OPT   +=  -DMAKEDOUBLEGLASS=524288
 
 #----------------------------------------------------------------------
 # Here, select compile environment for the target machine. This may need 
