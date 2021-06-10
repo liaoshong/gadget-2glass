@@ -479,6 +479,9 @@ extern struct global_data_all_processes
   double OutputListTimes[MAXLEN_OUTPUTLIST];   /*!< table with desired output times */
   int OutputListLength;                        /*!< number of output times stored in the table of desired output times */
 
+#ifdef MAKEDOUBLEGLASS
+  double glassParticleMass;
+#endif
 }
  All;                                          /*!< a container variable for global variables that are equal on all processors */
 
@@ -495,6 +498,10 @@ extern struct particle_data
   FLOAT GravAccel[3];		/*!< particle acceleration due to gravity */
 #ifdef PMGRID
   FLOAT GravPM[3];		/*!< particle acceleration due to long-range PM gravity force*/
+#endif
+#ifdef MAKEDOUBLEGLASS
+  FLOAT GravAccelTotal[3];
+  FLOAT GravPMTotal[3];
 #endif
 #ifdef FORCETEST
   FLOAT GravAccelDirect[3];	/*!< particle acceleration when computed with direct summation */

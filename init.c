@@ -29,6 +29,9 @@ void init(void)
     case 1:
 #if (MAKEGLASS > 1)
       seed_glass();
+#elif (MAKEDOUBLEGLASS > 1)
+      check_double_glass();
+      seed_double_glass();
 #else
       read_ic(All.InitCondFile);
 #endif
@@ -288,6 +291,113 @@ void seed_glass(void)
 
       P[i].Mass = partmass;
       P[i].Type = 1;
+      P[i].ID = IDstart + i;
+
+      NumPart++;
+    }
+}
+#endif
+
+#if (MAKEDOUBLEGLASS > 1)
+void   check_double_glass(void) {
+  /* Check the given number of particles. Should be an even number. */
+  if (MAKEDOUBLEGLASS % 2 != 0) {
+    if (ThisTask == 0) {
+      printf("MAKEDOUBLEGLASS = %d\nPlease specify an even number for MAKEDOUBLEGLASS.\n\n", MAKEDOUBLEGLASS);
+      fflush(stdout);
+    }
+    endrun(2);
+  }
+
+  /* Check the type of cell-opening criterion. Should use the standard Barnes & Hut, i.e. 0 */
+  if (All.TypeOfOpeningCriterion != 0) {
+    if (ThisTask == 0) {
+      printf("TypeOfOpeningCriterion = %d\nShould use the standard Barnes & Hut method, i.e. TypeOfOpeningCriterion = 0.\n\n",
+             All.TypeOfOpeningCriterion);
+      fflush(stdout);
+    }
+    endrun(3);
+  }
+}
+
+void seed_double_glass(void) {
+  int i, k, n_for_this_task;
+  double Range[3], LowerBound[3];
+  double drandom, partmass;
+  long long IDstart;
+  long long singleClassNumPart;
+
+  All.TotNumPart = MAKEDOUBLEGLASS;
+  partmass = All.Omega0 * (3 * All.Hubble * All.Hubble / (8 * M_PI * All.G))
+    * (All.BoxSize * All.BoxSize * All.BoxSize) / All.TotNumPart;
+
+  All.glassParticleMass = partmass;
+  All.MaxPart = All.PartAllocFactor * (All.TotNumPart / NTask); /* sets the maximum number of particles that may */
+
+  allocate_memory();
+
+  singleClassNumPart = All.TotNumPart / 2;
+  header.npartTotal[1] = header.npartTotal[2] = singleClassNumPart;
+  header.mass[1] = header.mass[2] = partmass;
+
+  if(ThisTask == 0)
+    {
+      printf("\nGlass initialising\nPartMass= %g\n", partmass);
+      printf("TotNumPart= %d%09d, each class has NumPart= %d%09d, \n\n",
+       (int) (All.TotNumPart / 1000000000), (int) (All.TotNumPart % 1000000000)
+       (int) (singleClassNumPart / 1000000000), (int) (singleClassNumPart % 1000000000));
+    }
+
+  /* set the number of particles assigned locally to this task */
+ 
+  /* split the temporal domain into Ntask slabs in z-direction */
+  Range[0] = Range[1] = All.BoxSize;
+  Range[2] = All.BoxSize / NTask;
+  LowerBound[0] = LowerBound[1] = 0;
+  LowerBound[2] = ThisTask * Range[2];
+
+  /* initialize number count, ID start, and random seed */
+  NumPart = 0;
+  IDstart = 1 + (All.TotNumPart / NTask) * ThisTask;
+  srand48(ThisTask);
+
+  /* set particle number of each class in this task */
+  n_for_this_task = singleClassNumPart / NTask;
+
+  if(ThisTask == NTask - 1)
+    n_for_this_task = singleClassNumPart - (NTask - 1) * n_for_this_task;
+
+  /* type = 1 first */
+  for(i = 0; i < n_for_this_task; i++)
+    {
+      for(k = 0; k < 3; k++)
+  {
+    drandom = drand48();
+
+    P[i].Pos[k] = LowerBound[k] + Range[k] * drandom;
+    P[i].Vel[k] = 0;
+  }
+
+      P[i].Mass = partmass;
+      P[i].Type = 1;
+      P[i].ID = IDstart + i;
+
+      NumPart++;
+    }
+
+  /* type = 2 then */
+  for(; i < 2 * n_for_this_task; i++)
+    {
+      for(k = 0; k < 3; k++)
+  {
+    drandom = drand48();
+
+    P[i].Pos[k] = LowerBound[k] + Range[k] * drandom;
+    P[i].Vel[k] = 0;
+  }
+
+      P[i].Mass = partmass;
+      P[i].Type = 2;
       P[i].ID = IDstart + i;
 
       NumPart++;

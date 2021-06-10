@@ -18,6 +18,7 @@ int    blockpresent(enum iofields blocknr);
 void   catch_abort(int sig);
 void   catch_fatal(int sig);
 void   check_omega(void);
+void   check_double_glass(void);
 void   close_outputfiles(void);
 int    compare_key(const void *a, const void *b);
 void   compute_accelerations(int mode);
@@ -180,6 +181,7 @@ void   savepositions(int num);
 double second(void);
 
 void   seed_glass(void);
+void   seed_double_glass(void);
 void   set_random_numbers(void);
 void   set_softenings(void);
 void   set_units(void);
