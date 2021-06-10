@@ -70,7 +70,7 @@ MinSizeTimestep       0.005
 % Tree algorithm, force accuracy, domain update frequency
 
 ErrTolTheta            0.5            
-TypeOfOpeningCriterion 1
+TypeOfOpeningCriterion 0
 ErrTolForceAcc         0.005
 
 
@@ -107,14 +107,14 @@ MinGasHsmlFractional 0.25
 
 SofteningGas       0
 SofteningHalo      0.03125
-SofteningDisk      0
+SofteningDisk      0.03125
 SofteningBulge     0           
 SofteningStars     0
 SofteningBndry     0
 
 SofteningGasMaxPhys       0
 SofteningHaloMaxPhys      0.03125
-SofteningDiskMaxPhys      0
+SofteningDiskMaxPhys      0.03125
 SofteningBulgeMaxPhys     0           
 SofteningStarsMaxPhys     0
 SofteningBndryMaxPhys     0
