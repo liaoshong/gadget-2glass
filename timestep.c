@@ -131,8 +131,55 @@ void advance_and_find_timesteps(void)
     }
 #endif
 
+#ifdef MAKEDOUBLEGLASS
+  for(i = 0, dispmax = 0, disp2sum = 0; i < NumPart; i++)
+    {
+      for(j = 0; j < 3; j++)
+	{
+	  P[i].GravPMTotal[j] *= -1;
+	  P[i].GravAccelTotal[j] *= -1;
+	  P[i].GravAccelTotal[j] += P[i].GravPMTotal[j];
+	  P[i].GravPMTotal[j] = 0;
+	}
 
+      disp = sqrt(P[i].GravAccelTotal[0] * P[i].GravAccelTotal[0] +
+		  P[i].GravAccelTotal[1] * P[i].GravAccelTotal[1] + P[i].GravAccelTotal[2] * P[i].GravAccelTotal[2]);
 
+      disp *= 2.0 / (3 * All.Hubble * All.Hubble);
+
+      disp2sum += disp * disp;
+
+      if(disp > dispmax)
+	dispmax = disp;
+    }
+
+  MPI_Allreduce(&dispmax, &globmax, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+  MPI_Allreduce(&disp2sum, &globdisp2sum, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+
+  dmean = pow(P[0].Mass / (All.Omega0 * 3 * All.Hubble * All.Hubble / (8 * M_PI * All.G)), 1.0 / 3);
+
+  if(globmax > dmean)
+    fac = dmean / globmax;
+  else
+    fac = 1.0;
+
+  if(ThisTask == 0)
+    {
+      printf("\nglass-making:  dmean= %g  global disp-maximum= %g  rms= %g\n\n",
+	     dmean, globmax, sqrt(globdisp2sum / All.TotNumPart));
+      fflush(stdout);
+    }
+
+  for(i = 0, dispmax = 0; i < NumPart; i++)
+    {
+      for(j = 0; j < 3; j++)
+	{
+	  P[i].Vel[j] = 0;
+	  P[i].Pos[j] += fac * P[i].GravAccelTotal[j] * 2.0 / (3 * All.Hubble * All.Hubble);
+	  P[i].GravAccelTotal[j] = 0;
+	}
+    }
+#endif    
 
   /* Now assign new timesteps and kick */
 

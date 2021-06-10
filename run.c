@@ -23,6 +23,7 @@ void run(void)
   int stopflag = 0;
   char stopfname[200], contfname[200];
   double t0, t1;
+  int i, j;
 
 
   sprintf(stopfname, "%sstop", All.OutputDir);
@@ -47,6 +48,46 @@ void run(void)
       compute_accelerations(0);	/* compute accelerations for 
 				 * the particles that are to be advanced  
 				 */
+      #ifdef MAKEDOUBLEGLASS
+      for (i = 0; i < NumPart; i++) {
+        for (j = 0; j < 3; j++) {
+          P[i].GravAccelTotal[j] += P[i].GravAccel[j];
+          P[i].GravPMTotal[j] += P[i].GravPM[j];
+          P[i].GravAccel[j] = P[i].GravPM[j] = 0;
+        }
+        if (P[i].Type == 1) {
+          P[i].Mass = All.glassParticleMass * 2;
+        } else {
+          P[i].Mass = 0;
+        }
+      }
+
+      compute_accelerations(0);
+
+      for (i = 0; i < NumPart; i++) {
+        for (j = 0; j < 3; j++) {
+          P[i].GravAccelTotal[j] += P[i].GravAccel[j];
+          P[i].GravPMTotal[j] += P[i].GravPM[j];
+          P[i].GravAccel[j] = P[i].GravPM[j] = 0;
+        }
+        if (P[i].Type == 2) {
+          P[i].Mass = All.glassParticleMass * 2;
+        } else {
+          P[i].Mass = 0;
+        }
+      }
+
+      compute_accelerations(0);
+
+      for (i = 0; i < NumPart; i++) {
+        for (j = 0; j < 3; j++) {
+          P[i].GravAccelTotal[j] += P[i].GravAccel[j];
+          P[i].GravPMTotal[j] += P[i].GravPM[j];
+          P[i].GravAccel[j] = P[i].GravPM[j] = 0;
+        }        
+        P[i].Mass = All.glassParticleMass;
+      }
+      #endif
 
       /* check whether we want a full energy statistics */
       if((All.Time - All.TimeLastStatistics) >= All.TimeBetStatistics)
