@@ -38,7 +38,7 @@ void advance_and_find_timesteps(void)
 #ifdef PMGRID
   double dt_gravkickA, dt_gravkickB;
 #endif
-#ifdef MAKEGLASS
+#if defined(MAKEGLASS) || defined(MAKEDOUBLEGLASS)
   double disp, dispmax, globmax, dmean, fac, disp2sum, globdisp2sum;
 #endif
 

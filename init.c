@@ -354,7 +354,7 @@ void seed_double_glass(void) {
     {
       printf("\nGlass initialising\nPartMass= %g\n", partmass);
       printf("TotNumPart= %d%09d, each class has NumPart= %d%09d, \n\n",
-       (int) (All.TotNumPart / 1000000000), (int) (All.TotNumPart % 1000000000)
+       (int) (All.TotNumPart / 1000000000), (int) (All.TotNumPart % 1000000000),
        (int) (singleClassNumPart / 1000000000), (int) (singleClassNumPart % 1000000000));
     }
 
