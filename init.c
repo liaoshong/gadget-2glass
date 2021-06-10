@@ -318,6 +318,16 @@ void   check_double_glass(void) {
     }
     endrun(3);
   }
+
+  /* Check given step size, should have MaxSizeTimestep = MinSizeTimestep */
+  if (fabs(All.MinSizeTimestep - All.MaxSizeTimestep) > 1e-5) {
+    if (ThisTask == 0) {
+      printf("MinSizeTimestep = %g, MaxSizeTimestep = %g\nShould specify equal values for them.\n\n",
+             All.MinSizeTimestep, All.MaxSizeTimestep);
+      fflush(stdout);
+    }
+    endrun(4);
+  }
 }
 
 void seed_double_glass(void) {
