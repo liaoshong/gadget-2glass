@@ -62,12 +62,15 @@ void run(void)
         }
       }
 
+      TreeReconstructFlag = 1;
       compute_accelerations(0);
 
       for (i = 0; i < NumPart; i++) {
         for (j = 0; j < 3; j++) {
-          P[i].GravAccelTotal[j] += P[i].GravAccel[j];
-          P[i].GravPMTotal[j] += P[i].GravPM[j];
+          if (P[i].Type == 1) {
+            P[i].GravAccelTotal[j] += P[i].GravAccel[j];
+            P[i].GravPMTotal[j] += P[i].GravPM[j];
+          }
           P[i].GravAccel[j] = P[i].GravPM[j] = 0;
         }
         if (P[i].Type == 2) {
@@ -77,12 +80,15 @@ void run(void)
         }
       }
 
+      TreeReconstructFlag = 1;
       compute_accelerations(0);
 
       for (i = 0; i < NumPart; i++) {
         for (j = 0; j < 3; j++) {
-          P[i].GravAccelTotal[j] += P[i].GravAccel[j];
-          P[i].GravPMTotal[j] += P[i].GravPM[j];
+          if (P[i].Type == 2) {
+            P[i].GravAccelTotal[j] += P[i].GravAccel[j];
+            P[i].GravPMTotal[j] += P[i].GravPM[j];
+          }
           P[i].GravAccel[j] = P[i].GravPM[j] = 0;
         }        
         P[i].Mass = All.glassParticleMass;
