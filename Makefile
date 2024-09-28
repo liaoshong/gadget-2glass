@@ -69,7 +69,7 @@ OPT   +=  -DNOSTOP_WHEN_BELOW_MINTIMESTEP
 
 #--------------------------------------- Glass making
 #OPT   +=  -DMAKEGLASS=262144
-OPT   +=  -DMAKEDOUBLEGLASS=524288
+OPT   +=  -DMAKEDOUBLEGLASS
 
 #----------------------------------------------------------------------
 # Here, select compile environment for the target machine. This may need 
