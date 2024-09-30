@@ -586,6 +586,16 @@ void read_parameter_file(char *fname)
       addr[nt] = &All.MinGasTemp;
       id[nt++] = DOUBLE;
 
+      #ifdef MAKEDOUBLEGLASS
+      strcpy(tag[nt], "glassPartNumType1");
+      addr[nt] = &All.glassPartNumType1;
+      id[nt++] = INT;
+
+      strcpy(tag[nt], "glassPartNumType2");
+      addr[nt] = &All.glassPartNumType2;
+      id[nt++] = INT;
+      #endif
+
       if((fd = fopen(fname, "r")))
 	{
 	  sprintf(buf, "%s%s", fname, "-usedvalues");

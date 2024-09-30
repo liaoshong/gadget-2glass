@@ -124,7 +124,9 @@ SofteningBndryMaxPhys     0
 
 MaxRMSDisplacementFac 0.2
 
-
+% For two-class glass
+glassPartNumType1	65536
+glassPartNumType2	262144
 
 
 

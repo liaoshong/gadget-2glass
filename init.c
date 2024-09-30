@@ -29,7 +29,7 @@ void init(void)
     case 1:
 #if (MAKEGLASS > 1)
       seed_glass();
-#elif (MAKEDOUBLEGLASS > 1)
+#elif defined(MAKEDOUBLEGLASS)
       check_double_glass();
       seed_double_glass();
 #else
@@ -298,12 +298,13 @@ void seed_glass(void)
 }
 #endif
 
-#if (MAKEDOUBLEGLASS > 1)
+#ifdef MAKEDOUBLEGLASS
 void   check_double_glass(void) {
-  /* Check the given number of particles. Should be an even number. */
-  if (MAKEDOUBLEGLASS % 2 != 0) {
+  /* Check if the input number of particles are positive */
+  if (All.glassPartNumType1 <= 0 || All.glassPartNumType2 <= 0) {
     if (ThisTask == 0) {
-      printf("MAKEDOUBLEGLASS = %d\nPlease specify an even number for MAKEDOUBLEGLASS.\n\n", MAKEDOUBLEGLASS);
+      printf("glassPartNumType1 = %d, glassPartNumType2 = %d\nPlease specify positive numbers of particles.\n\n",
+             All.glassPartNumType1, All.glassPartNumType2);
       fflush(stdout);
     }
     endrun(2);
@@ -331,13 +332,12 @@ void   check_double_glass(void) {
 }
 
 void seed_double_glass(void) {
-  int i, k, n_for_this_task;
+  int i, k, n_for_this_task_type1, n_for_this_task_type2;
   double Range[3], LowerBound[3];
   double drandom, partmass;
-  long long IDstart;
-  long long singleClassNumPart;
+  long long IDstart_type1, IDstart_type2;
 
-  All.TotNumPart = MAKEDOUBLEGLASS;
+  All.TotNumPart = All.glassPartNumType1 + All.glassPartNumType2;
   partmass = All.Omega0 * (3 * All.Hubble * All.Hubble / (8 * M_PI * All.G))
     * (All.BoxSize * All.BoxSize * All.BoxSize) / All.TotNumPart;
 
@@ -346,16 +346,17 @@ void seed_double_glass(void) {
 
   allocate_memory();
 
-  singleClassNumPart = All.TotNumPart / 2;
-  header.npartTotal[1] = header.npartTotal[2] = singleClassNumPart;
+  header.npartTotal[1] = All.glassPartNumType1;
+  header.npartTotal[2] = All.glassPartNumType2;
   header.mass[1] = header.mass[2] = partmass;
 
   if(ThisTask == 0)
     {
       printf("\nGlass initialising\nPartMass= %g\n", partmass);
-      printf("TotNumPart= %d%09d, each class has NumPart= %d%09d, \n\n",
+      printf("TotNumPart= %d%09d, class 1 has NumPart= %d%09d, class 2 has NumPart= %d%09d\n\n",
        (int) (All.TotNumPart / 1000000000), (int) (All.TotNumPart % 1000000000),
-       (int) (singleClassNumPart / 1000000000), (int) (singleClassNumPart % 1000000000));
+       (int) (All.glassPartNumType1 / 1000000000), (int) (All.glassPartNumType1 % 1000000000),
+       (int) (All.glassPartNumType2 / 1000000000), (int) (All.glassPartNumType2 % 1000000000));
     }
 
   /* set the number of particles assigned locally to this task */
@@ -368,17 +369,21 @@ void seed_double_glass(void) {
 
   /* initialize number count, ID start, and random seed */
   NumPart = 0;
-  IDstart = 1 + (All.TotNumPart / NTask) * ThisTask;
+  IDstart_type1 = 1 + (All.glassPartNumType1 / NTask) * ThisTask;
+  IDstart_type2 = All.glassPartNumType1 + 1 + (All.glassPartNumType2 / NTask) * ThisTask;
   srand48(ThisTask);
 
-  /* set particle number of each class in this task */
-  n_for_this_task = singleClassNumPart / NTask;
+  /* set particle number in this task */
+  n_for_this_task_type1 = All.glassPartNumType1 / NTask;
+  n_for_this_task_type2 = All.glassPartNumType2 / NTask;
 
-  if(ThisTask == NTask - 1)
-    n_for_this_task = singleClassNumPart - (NTask - 1) * n_for_this_task;
+  if(ThisTask == NTask - 1) {
+    n_for_this_task_type1 = All.glassPartNumType1 - (NTask - 1) * n_for_this_task_type1;
+    n_for_this_task_type2 = All.glassPartNumType2 - (NTask - 1) * n_for_this_task_type2;
+  }
 
   /* type = 1 first */
-  for(i = 0; i < n_for_this_task; i++)
+  for(i = 0; i < n_for_this_task_type1; i++)
     {
       for(k = 0; k < 3; k++)
   {
@@ -390,13 +395,13 @@ void seed_double_glass(void) {
 
       P[i].Mass = partmass;
       P[i].Type = 1;
-      P[i].ID = IDstart + i;
+      P[i].ID = IDstart_type1 + i;
 
       NumPart++;
     }
 
   /* type = 2 then */
-  for(; i < 2 * n_for_this_task; i++)
+  for(; i < n_for_this_task_type1+n_for_this_task_type2; i++)
     {
       for(k = 0; k < 3; k++)
   {
@@ -408,7 +413,7 @@ void seed_double_glass(void) {
 
       P[i].Mass = partmass;
       P[i].Type = 2;
-      P[i].ID = IDstart + i;
+      P[i].ID = IDstart_type2 + i;
 
       NumPart++;
     }

@@ -44,7 +44,9 @@ void run(void)
 
       domain_Decomposition();	/* do domain decomposition if needed */
 
-
+      #ifdef MAKEDOUBLEGLASS
+      TreeReconstructFlag = 1;
+      #endif
       compute_accelerations(0);	/* compute accelerations for 
 				 * the particles that are to be advanced  
 				 */
@@ -56,7 +58,7 @@ void run(void)
           P[i].GravAccel[j] = P[i].GravPM[j] = 0;
         }
         if (P[i].Type == 1) {
-          P[i].Mass = All.glassParticleMass * 2;
+          P[i].Mass = All.glassParticleMass * pow((double) All.TotNumPart / (double) All.glassPartNumType1, 1./3.);
         } else {
           P[i].Mass = 0;
         }
@@ -74,7 +76,7 @@ void run(void)
           P[i].GravAccel[j] = P[i].GravPM[j] = 0;
         }
         if (P[i].Type == 2) {
-          P[i].Mass = All.glassParticleMass * 2;
+          P[i].Mass = All.glassParticleMass * pow((double) All.TotNumPart / (double) All.glassPartNumType2, 1./3.);
         } else {
           P[i].Mass = 0;
         }

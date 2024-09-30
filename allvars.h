@@ -481,6 +481,8 @@ extern struct global_data_all_processes
 
 #ifdef MAKEDOUBLEGLASS
   double glassParticleMass;
+  int glassPartNumType1;
+  int glassPartNumType2;
 #endif
 }
  All;                                          /*!< a container variable for global variables that are equal on all processors */
