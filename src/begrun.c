@@ -200,6 +200,10 @@ void open_outputfiles(void)
 {
   char mode[2], buf[200];
 
+  if(ThisTask == 0)
+    mkdir(All.OutputDir, 02755);
+  MPI_Barrier(MPI_COMM_WORLD);
+
   if(ThisTask != 0)		/* only the root processor writes to the log files */
     return;
 

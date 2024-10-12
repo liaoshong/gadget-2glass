@@ -205,25 +205,17 @@ HDF5INCL =
 HDF5LIB  =
 endif
 
+SRCDIR = ./src
+OBJDIR = ./obj
+SOURCES = $(wildcard $(SRCDIR)/*.c)
+OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
 
 OPTIONS =  $(OPTIMIZE) $(OPT)
+CFLAGS = $(OPTIONS) $(GSL_INCL) $(FFTW_INCL) $(HDF5INCL) -I$(SRCDIR)
 
 EXEC   = Gadget2
 
-OBJS   = main.o  run.o  predict.o begrun.o endrun.o global.o  \
-	 timestep.o  init.o restart.o  io.o    \
-	 accel.o   read_ic.o  ngb.o  \
-	 system.o  allocate.o  density.o  \
-	 gravtree.o hydra.o  driftfac.o  \
-	 domain.o  allvars.o potential.o  \
-         forcetree.o   peano.o gravtree_forcetest.o \
-	 pm_periodic.o pm_nonperiodic.o longrange.o 
-
 INCL   = allvars.h  proto.h  tags.h  Makefile
-
-
-CFLAGS = $(OPTIONS) $(GSL_INCL) $(FFTW_INCL) $(HDF5INCL)
-
 
 ifeq (NOTYPEPREFIX_FFTW,$(findstring NOTYPEPREFIX_FFTW,$(OPT)))    # fftw installed with type prefix?
   FFTW_LIB = $(FFTW_LIBS) -lrfftw_mpi -lfftw_mpi -lrfftw -lfftw
@@ -235,17 +227,19 @@ else
 endif
 endif
 
-
 LIBS   =   $(HDF5LIB) -g  $(MPICHLIB)  $(GSL_LIBS) -lgsl -lgslcblas -lm $(FFTW_LIB) 
 
-$(EXEC): $(OBJS) 
-	$(CC) $(OBJS) $(LIBS)   -o  $(EXEC)  
+$(EXEC): $(OBJS)
+	$(CC) $(OBJS) $(LIBS)   -o  $(EXEC)
 
-$(OBJS): $(INCL) 
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -rf $(OBJDIR) $(EXEC)
 
 
 #-----------------------------------------------------------------------
