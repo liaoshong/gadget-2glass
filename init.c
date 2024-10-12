@@ -329,6 +329,36 @@ void   check_double_glass(void) {
     }
     endrun(4);
   }
+
+  /* Compute the total step number under the input parameters, and check if it is at least a few thousand steps */
+  double Timebase_interval = (log(All.TimeMax) - log(All.TimeBegin)) / TIMEBASE;
+  int ti_step = All.MaxSizeTimestep / Timebase_interval;
+  int ti_min;
+  int requireMinStepNum = 2048; /* Set it to 2048 for now */
+  double dloga;
+
+  ti_min = TIMEBASE;
+  while(ti_min > ti_step) {
+    ti_min >>= 1;
+  }
+  ti_step = ti_min;
+
+  dloga = ti_step * Timebase_interval;
+  All.glassTotalStepNum = (log(All.TimeMax) - log(All.TimeBegin)) / dloga;
+  if (ThisTask == 0) {
+    printf("The total step number of evolving this glass is %d\n", All.glassTotalStepNum);
+    fflush(stdout);
+  }
+
+  if (All.glassTotalStepNum < requireMinStepNum) {
+    dloga = (log(All.TimeMax) - log(All.TimeBegin)) / requireMinStepNum;
+    if (ThisTask == 0) {
+      printf("The total step number should be at least %d. Please set your input MinSizeTimestep = MaxSizeTimestep <= %g\n",
+	     requireMinStepNum, dloga);
+      fflush(stdout);
+    }
+    endrun(5);
+  }
 }
 
 void seed_double_glass(void) {

@@ -483,6 +483,7 @@ extern struct global_data_all_processes
   double glassParticleMass;
   int glassPartNumType1;
   int glassPartNumType2;
+  int glassTotalStepNum;
 #endif
 }
  All;                                          /*!< a container variable for global variables that are equal on all processors */

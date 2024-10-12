@@ -46,6 +46,10 @@ void run(void)
 
       #ifdef MAKEDOUBLEGLASS
       TreeReconstructFlag = 1;
+      if (ThisTask == 0) {
+        printf("MAKEDOUBLEGLASS: compute gravitational acceleration for all particles.\n");
+	fflush(stdout);
+      }
       #endif
       compute_accelerations(0);	/* compute accelerations for 
 				 * the particles that are to be advanced  
@@ -57,43 +61,58 @@ void run(void)
           P[i].GravPMTotal[j] += P[i].GravPM[j];
           P[i].GravAccel[j] = P[i].GravPM[j] = 0;
         }
-        if (P[i].Type == 1) {
-          P[i].Mass = All.glassParticleMass * pow((double) All.TotNumPart / (double) All.glassPartNumType1, 1./3.);
-        } else {
-          P[i].Mass = 0;
-        }
       }
 
-      TreeReconstructFlag = 1;
-      compute_accelerations(0);
-
-      for (i = 0; i < NumPart; i++) {
-        for (j = 0; j < 3; j++) {
+      /* Stop considering the additional repulsive force from each type in the last 50 steps. This can help improve
+       * the force balance property of the whole particle set */
+      if (All.NumCurrentTiStep <= All.glassTotalStepNum - 50) {
+	for (i = 0; i < NumPart; i++) {
           if (P[i].Type == 1) {
-            P[i].GravAccelTotal[j] += P[i].GravAccel[j];
-            P[i].GravPMTotal[j] += P[i].GravPM[j];
+            P[i].Mass = All.glassParticleMass * pow((double) All.TotNumPart / (double) All.glassPartNumType1, 1./3.);
+          } else {
+            P[i].Mass = 0;
           }
-          P[i].GravAccel[j] = P[i].GravPM[j] = 0;
         }
-        if (P[i].Type == 2) {
-          P[i].Mass = All.glassParticleMass * pow((double) All.TotNumPart / (double) All.glassPartNumType2, 1./3.);
-        } else {
-          P[i].Mass = 0;
+
+        TreeReconstructFlag = 1;
+	if (ThisTask == 0) {
+          printf("MAKEDOUBLEGLASS: compute gravitational acceleration for type=1 particles.\n");
+          fflush(stdout);
         }
-      }
+        compute_accelerations(0);
 
-      TreeReconstructFlag = 1;
-      compute_accelerations(0);
-
-      for (i = 0; i < NumPart; i++) {
-        for (j = 0; j < 3; j++) {
+        for (i = 0; i < NumPart; i++) {
+          for (j = 0; j < 3; j++) {
+            if (P[i].Type == 1) {
+              P[i].GravAccelTotal[j] += P[i].GravAccel[j];
+              P[i].GravPMTotal[j] += P[i].GravPM[j];
+            }
+            P[i].GravAccel[j] = P[i].GravPM[j] = 0;
+          }
           if (P[i].Type == 2) {
-            P[i].GravAccelTotal[j] += P[i].GravAccel[j];
-            P[i].GravPMTotal[j] += P[i].GravPM[j];
+            P[i].Mass = All.glassParticleMass * pow((double) All.TotNumPart / (double) All.glassPartNumType2, 1./3.);
+          } else {
+            P[i].Mass = 0;
           }
-          P[i].GravAccel[j] = P[i].GravPM[j] = 0;
-        }        
-        P[i].Mass = All.glassParticleMass;
+        }
+
+        TreeReconstructFlag = 1;
+	if (ThisTask == 0) {
+          printf("MAKEDOUBLEGLASS: compute gravitational acceleration for type=2 particles.\n");
+          fflush(stdout);
+        }
+        compute_accelerations(0);
+
+        for (i = 0; i < NumPart; i++) {
+          for (j = 0; j < 3; j++) {
+            if (P[i].Type == 2) {
+              P[i].GravAccelTotal[j] += P[i].GravAccel[j];
+              P[i].GravPMTotal[j] += P[i].GravPM[j];
+            }
+            P[i].GravAccel[j] = P[i].GravPM[j] = 0;
+          }        
+          P[i].Mass = All.glassParticleMass;
+        }
       }
       #endif
 
