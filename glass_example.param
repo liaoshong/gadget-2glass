@@ -1,7 +1,7 @@
 %  Relevant files
 
 InitCondFile  	   empty
-OutputDir          ./output_unequal/
+OutputDir          ./output/
 
 EnergyFile         energy.txt
 InfoFile           info.txt
