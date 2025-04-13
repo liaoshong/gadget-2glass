@@ -1,7 +1,7 @@
 %  Relevant files
 
-InitCondFile  	   /data/dell3/userdir/shliao/512_50mpc/IC/512
-OutputDir          ./output/
+InitCondFile  	   empty
+OutputDir          ./output_unequal/
 
 EnergyFile         energy.txt
 InfoFile           info.txt
@@ -11,20 +11,18 @@ CpuFile            cpu.txt
 RestartFile        restart
 SnapshotFileBase   snapshot
 
-OutputListFilename /data/dell3/userdir/shliao/512_50mpc/output_time.txt
+OutputListFilename empty.txt
 
 % CPU time -limit
 
-TimeLimitCPU      3600000000  % = 10 hours
+TimeLimitCPU      36000  % = 10 hours
 ResubmitOn        0
 ResubmitCommand   my-scriptfile  
 
-
 % Code options
 
-
 ICFormat                 1
-SnapFormat               1
+SnapFormat               3
 ComovingIntegrationOn    1
 
 TypeOfTimestepCriterion  0
@@ -33,8 +31,8 @@ PeriodicBoundariesOn     1
 
 %  Caracteristics of run
 
-TimeBegin           1.0        % Begin of the simulation
-TimeMax	            10000.0        % End of the simulation
+TimeBegin           0.001        % Begin of the simulation
+TimeMax	            1.0        % End of the simulation
 
 Omega0	              1.0
 OmegaLambda           0.0
@@ -45,7 +43,7 @@ BoxSize               100.0
 % Output frequency
 
 TimeBetSnapshot        1.2
-TimeOfFirstSnapshot    1.0
+TimeOfFirstSnapshot    0.001
 
 CpuTimeBetRestartFile     36000000.0    ; here in seconds
 TimeBetStatistics         0.05
@@ -53,19 +51,14 @@ TimeBetStatistics         0.05
 NumFilesPerSnapshot       1
 NumFilesWrittenInParallel 1
 
-
-
 % Accuracy of time integration
 
 ErrTolIntAccuracy      0.025 
 
 CourantFac             0.15     
 
-MaxSizeTimestep       0.005
-MinSizeTimestep       0.005
-
-
-
+MaxSizeTimestep       0.001
+MinSizeTimestep       0.001
 
 % Tree algorithm, force accuracy, domain update frequency
 
@@ -73,9 +66,7 @@ ErrTolTheta            0.5
 TypeOfOpeningCriterion 0
 ErrTolForceAcc         0.005
 
-
 TreeDomainUpdateFrequency    0.1
-
 
 %  Further parameters of SPH
 
@@ -85,13 +76,11 @@ ArtBulkViscConst       0.8
 InitGasTemp            0.0          % always ignored if set to 0 
 MinGasTemp             0.0    
 
-
 % Memory allocation
 
 PartAllocFactor       1.8
 TreeAllocFactor       3.0
 BufferSize            40          % in MByte
-
 
 % System of units
 
@@ -100,7 +89,6 @@ UnitMass_in_g            1.989e43           ;  1.0e10 solar masses
 UnitVelocity_in_cm_per_s 1e5                ;  1 km/sec 
 GravityConstantInternal  0
  
-
 % Softening lengths
 
 MinGasHsmlFractional 0.25
@@ -119,35 +107,8 @@ SofteningBulgeMaxPhys     0
 SofteningStarsMaxPhys     0
 SofteningBndryMaxPhys     0
 
-
-
-
 MaxRMSDisplacementFac 0.2
 
 % For two-class glass
-glassPartNumType1	65536
-glassPartNumType2	262144
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+glassPartNumType1	262144
+glassPartNumType2	1402203

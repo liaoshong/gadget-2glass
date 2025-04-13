@@ -19,7 +19,7 @@ OPT   +=  -DWALLCLOCK
 
 
 #--------------------------------------- TreePM Options
-OPT   +=  -DPMGRID=128
+OPT   +=  -DPMGRID=256
 #OPT   +=  -DPLACEHIGHRESREGION=3
 #OPT   +=  -DENLARGEREGION=1.2
 #OPT   +=  -DASMTH=1.25
@@ -40,7 +40,7 @@ OPT   +=  -DNOSTOP_WHEN_BELOW_MINTIMESTEP
 
 
 #--------------------------------------- Output 
-#OPT   +=  -DHAVE_HDF5  
+OPT   +=  -DHAVE_HDF5  
 #OPT   +=  -DOUTPUTPOTENTIAL
 #OPT   +=  -DOUTPUTACCELERATION
 #OPT   +=  -DOUTPUTCHANGEOFENTROPY
@@ -106,8 +106,8 @@ GSL_LIBS =  -L/home/shliao/libraries/gsl_nova/lib
 FFTW_INCL=  -I/home/shliao/libraries/fftw_nova/include
 FFTW_LIBS=  -L/home/shliao/libraries/fftw_nova/lib
 MPICHLIB =
-HDF5INCL =  
-HDF5LIB  =  -lhdf5 -lz 
+HDF5INCL =  -I/home/shliao/libraries/hdf5-1.6.7/include
+HDF5LIB  =  -L/home/shliao/libraries/hdf5-1.6.7/lib -lhdf5 -lz 
 endif
 
 
