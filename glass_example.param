@@ -23,11 +23,11 @@ ResubmitCommand   my-scriptfile
 
 ICFormat                 1
 SnapFormat               3
-ComovingIntegrationOn    1
+ComovingIntegrationOn    1	% set it to 1 for glass-making
 
 TypeOfTimestepCriterion  0
 OutputListOn             0
-PeriodicBoundariesOn     1
+PeriodicBoundariesOn     1	% set it to 1 for glass-making
 
 %  Caracteristics of run
 
@@ -38,14 +38,14 @@ Omega0	              1.0
 OmegaLambda           0.0
 OmegaBaryon           0.0
 HubbleParam           0.7
-BoxSize               100.0
+BoxSize               100.0	% The exact value of BoxSize is not important, as the glass distribution can be rescaled
 
 % Output frequency
 
 TimeBetSnapshot        1.2
 TimeOfFirstSnapshot    0.001
 
-CpuTimeBetRestartFile     3600.0    ; here in seconds
+CpuTimeBetRestartFile     3600.0    % here in seconds
 TimeBetStatistics         0.05
 
 NumFilesPerSnapshot       1
@@ -57,7 +57,8 @@ ErrTolIntAccuracy      0.025
 
 CourantFac             0.15     
 
-MaxSizeTimestep       0.001
+MaxSizeTimestep       0.001	% For glass-making, we usually set MaxSizeTimestep equal to MinSizeTimestep and ensure 
+				% that the entire run has at least a few thousand steps.
 MinSizeTimestep       0.001
 
 % Tree algorithm, force accuracy, domain update frequency
