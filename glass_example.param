@@ -45,7 +45,7 @@ BoxSize               100.0
 TimeBetSnapshot        1.2
 TimeOfFirstSnapshot    0.001
 
-CpuTimeBetRestartFile     36000000.0    ; here in seconds
+CpuTimeBetRestartFile     3600.0    ; here in seconds
 TimeBetStatistics         0.05
 
 NumFilesPerSnapshot       1
