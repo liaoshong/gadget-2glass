@@ -24,8 +24,8 @@ Please refer to Liao et al. (2025) for more details.
 
 Clone the repository:
 ```
-git clone https://liaoshong@bitbucket.org/liaoshong/gadget2-twoclassglass.git  
-cd gadget2-twoclassglass
+git clone https://liaoshong@bitbucket.org/liaoshong/gadget-2glass.git
+cd gadget-2glass
 ```
 
 The installation procedure is the same as for the original Gadget-2 code. It requires several non-standard libraries, including MPI, GSL, FFTW2, and HDF5 (optional). After installing these libraries, please edit ```Makefile``` to adjust it to your system.
