@@ -15,7 +15,7 @@ OutputListFilename empty.txt
 
 % CPU time -limit
 
-TimeLimitCPU      36000  % = 10 hours
+TimeLimitCPU      72000  % = 20 hours
 ResubmitOn        0
 ResubmitCommand   my-scriptfile  
 
