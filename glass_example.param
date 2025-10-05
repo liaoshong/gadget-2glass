@@ -113,3 +113,4 @@ MaxRMSDisplacementFac 0.2
 % For two-component glass
 glassPartNumType1	262144
 glassPartNumType2	1402203
+glassNoAddForceStepNum  20

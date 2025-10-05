@@ -598,6 +598,10 @@ void read_parameter_file(char *fname)
       strcpy(tag[nt], "glassPartNumType2");
       addr[nt] = &All.glassPartNumType2;
       id[nt++] = INT;
+
+      strcpy(tag[nt], "glassNoAddForceStepNum");
+      addr[nt] = &All.glassNoAddForceStepNum;
+      id[nt++] = INT;
       #endif
 
       if((fd = fopen(fname, "r")))

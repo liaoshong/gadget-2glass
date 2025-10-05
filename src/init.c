@@ -359,6 +359,25 @@ void   check_double_glass(void) {
     }
     endrun(5);
   }
+
+  /* Check if the input number of steps switching off the additional force terms is reasonable */
+  if (All.glassNoAddForceStepNum < 0) {
+    if (ThisTask == 0) {
+      printf("glassNoAddForceStepNum = %d\nPlease specify a non-negative number of steps.\n\n",
+             All.glassNoAddForceStepNum);
+      fflush(stdout);
+    }
+    endrun(6);
+  }
+
+  if (All.glassNoAddForceStepNum >= All.glassTotalStepNum) {
+    if (ThisTask == 0) {
+      printf("glassNoAddForceStepNum = %d >= total step number of glass evolving = %d\nPlease specify a smaller glassNoAddForceStepNum.\n\n",
+             All.glassNoAddForceStepNum, All.glassTotalStepNum);
+      fflush(stdout);
+    }
+    endrun(7);
+  } 
 }
 
 void seed_double_glass(void) {

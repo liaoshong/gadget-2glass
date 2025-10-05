@@ -63,9 +63,9 @@ void run(void)
         }
       }
 
-      /* Stop considering the additional repulsive force from each type in the last 50 steps. This can help improve
+      /* Stop considering the additional repulsive force from each type in the last glassNoAddForceStepNum steps. This can help improve
        * the force balance property of the whole particle set */
-      if (All.NumCurrentTiStep <= All.glassTotalStepNum - 50) {
+      if (All.NumCurrentTiStep <= All.glassTotalStepNum - All.glassNoAddForceStepNum) {
 	for (i = 0; i < NumPart; i++) {
           if (P[i].Type == 1) {
             P[i].Mass = All.glassParticleMass * pow((double) All.TotNumPart / (double) All.glassPartNumType1, 1./3.);

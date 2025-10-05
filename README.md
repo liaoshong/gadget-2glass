@@ -8,7 +8,7 @@ Gadget-2Glass is a code for generating two-component, glass-like particle loads 
 
 **Particle loads for cosmological simulations with equal-mass dark matter and baryonic particles**  
 Liao et al. (2025)  
-[arXiv:2504.xxxxx](https://arxiv.org/abs/2504.xxxxx)
+[arXiv:xxxx.xxxxx](https://arxiv.org/abs/xxxx.xxxxx)
 
 ---
 
@@ -49,8 +49,9 @@ The file ```glass_example.param```, which was used in Liao et al. (2025), provid
 
 * ```glassPartNumType1```: number of particles of type 1 (e.g., gas)
 * ```glassPartNumType2```: number of particles of type 2 (e.g., dark matter)
+* ```glassNoAddForceStepNum```: number of steps for evolving the two-component glass after switching off the additional force terms from the same component. A recommended value is 20. See Liao et al. (2025) for details.
 
-For example, in the provided file, these values are 262144 and 1402203, which generates a particle load with 262144 gas and 1402203 dark matter particles.
+For example, in the provided file, the number of particles are 262144 and 1402203, which generates a particle load with 262144 gas and 1402203 dark matter particles.
 
 Please refer to the original Gadget-2 user guide for the explanations of other parameters.
 
