@@ -51,7 +51,7 @@ The file ```glass_example.param```, which was used in Liao et al. (2025), provid
 * ```glassPartNumType2```: number of particles of type 2 (e.g., dark matter)
 * ```glassNoAddForceStepNum```: number of steps for evolving the two-component glass after switching off the additional force terms from the same component. A recommended value is 20. See Liao et al. (2025) for details.
 
-For example, in the provided file, the number of particles are 262144 and 1402203, which generates a particle load with 262144 gas and 1402203 dark matter particles.
+For example, in the provided file, the particle numbers are 262144 and 1402203, which generates a particle load with 262144 gas and 1402203 dark matter particles.
 
 Please refer to the original Gadget-2 user guide for the explanations of other parameters.
 
