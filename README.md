@@ -7,8 +7,7 @@
 Gadget-2Glass is a code for generating two-component, glass-like particle loads for cosmological simulations with dark matter and gas. It is based on the publicly available Gadget-2 code by Volker Springel ([Link](https://wwwmpa.mpa-garching.mpg.de/gadget/)). This code accompanies the paper:
 
 **Particle loads for cosmological simulations with equal-mass dark matter and baryonic particles**  
-Liao et al. (2025)  
-[arXiv:xxxx.xxxxx](https://arxiv.org/abs/xxxx.xxxxx)
+Liao et al., submitted to ApJ (2025) 
 
 ---
 
