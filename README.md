@@ -25,7 +25,7 @@ Please refer to Liao et al. (2025) for more details.
 
 Clone the repository:
 ```
-git clone https://liaoshong@bitbucket.org/liaoshong/gadget-2glass.git
+git clone https://github.com/liaoshong/gadget-2glass.git
 cd gadget-2glass
 ```
 
